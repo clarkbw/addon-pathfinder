@@ -1,0 +1,9 @@
+{
+    "name": "userstyles",
+    "description": "Userstyles for Jetpacks",
+    "keywords": ["css", "style", "design", "userstyle"],
+    "author": "Erik Vold (http://erikvold.com/) <erikvvold@gmail.com>",
+    "version": "1.0",
+    "license": "MPL 1.1/GPL 2.0/LGPL 2.1",
+    "dependencies": ["api-utils"]
+}
