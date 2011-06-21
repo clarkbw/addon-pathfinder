@@ -1,0 +1,9 @@
+{
+    "name": "application-utils",
+    "description": "Gecko application utils for Jetpacks",
+    "keywords": ["utils", "application", "gecko", "restart", "quit"],
+    "author": "Erik Vold (http://erikvold.com/) <erikvvold@gmail.com>",
+    "version": "1.0",
+    "license": "MPL 1.1/GPL 2.0/LGPL 2.1",
+    "dependencies": ["api-utils"]
+}
