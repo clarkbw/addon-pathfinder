@@ -3,7 +3,7 @@
     "description": "XUL hotkeys for Jetpacks",
     "keywords": ["xul", "hotkey", "key"],
     "author": "Erik Vold (http://erikvold.com/) <erikvvold@gmail.com>",
-    "version": "1.0",
+    "version": "1.1",
     "license": "MIT/X11",
     "dependencies": ["api-utils", "vold-utils"]
 }
