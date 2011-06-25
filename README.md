@@ -1,4 +1,4 @@
-# Toolbar Buttons Package for the Add-on SDK
+# Toolbar Buttons Package for Mozilla's Add-on SDK
 by Erik Vold
 
 The toolbarbutton module in this package allows one to easily create toolbar
