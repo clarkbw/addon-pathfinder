@@ -63,7 +63,8 @@ Removes the toolbar button from all open windows and no longer adds the
 toolbar button to new windows.
 
 @param options {Object}
-  Options for the toolbarbutton, with the following parameters:
+Options which describe the position to move the toolbar button to, with the
+following parameters:
 
 @prop tooblarID {String}
 The id of the toolbar which you want to add the toolbar button to.
@@ -77,5 +78,10 @@ Example toolbar IDs:
 
 @prop insertbefore {String}
 The id of the element which the toolbar button should be inserted before.
+
+@prop forceMove {Boolean}
+If `forceMove` is `false`, then the move will only occur if the toolbar button
+is not already being used. If `true`, then the move will happen no matter where
+the toolbar button is.
 </api>
 </api>
