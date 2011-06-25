@@ -1,0 +1,81 @@
+<!-- contributed by Erik Vold [erikvvold@gmail.com]  -->
+
+
+The `toolbarbutton` API provides a dead simple way to create
+[toolbar buttons](https://developer.mozilla.org/en/XUL/toolbarbutton), which
+can perform an action when clicked.
+
+## Example ##
+
+    exports.main = function(options) {
+      // create toolbarbutton
+      var tbb = require("toolbarbutton").ToolbarButton({
+        id: "TBB-TEST",
+        label: "TBB TEST",
+        onCommand: function () {
+          tbb.destroy(); 
+        }
+      });
+    
+      if (options.loadReason == "install") {
+        tbb.moveTo({
+          toolbarID: "nav-bar",
+          forceMove: false // only move from palette
+        });
+      }
+    };
+
+<api name="ToolbarButton">
+@class
+
+Module exports `ToolbarButton` constructor allowing users to create a
+toolbar button.
+
+<api name="ToolbarButton">
+@constructor
+Creates a toolbarbutton.
+
+@param options {Object}
+  Options for the toolbarbutton, with the following parameters:
+
+@prop id {String}
+A id for the toolbar button, this should be namespaced.
+
+@prop label {String}
+A label for the toolbar button.
+
+@prop image {String}
+A image url for the toolbar button.
+
+@prop onCommand {Function}
+Function that is invoked when the toolbar button is pressed.
+</api>
+
+<api name="destroy">
+@method
+Removes the toolbar button from all open windows and no longer adds the
+toolbar button to new windows.
+</api>
+
+<api name="moveTo">
+@method
+Removes the toolbar button from all open windows and no longer adds the
+toolbar button to new windows.
+
+@param options {Object}
+  Options for the toolbarbutton, with the following parameters:
+
+@prop tooblarID {String}
+The id of the toolbar which you want to add the toolbar button to.
+
+Example toolbar IDs:
+
+- **toolbar-menubar**: The menu bar.
+- **nav-bar**: The navigation bar.
+- **TabsToolbar**: The tabs bar.
+- **addon-bar**: The addon bar.
+
+@prop insertbefore {String}
+The id of the element which the toolbar button should be inserted before.
+</api>
+</api>
