@@ -47,8 +47,11 @@ A label for the toolbar button.
 @prop image {String}
 A image url for the toolbar button.
 
-@prop onCommand {Function}
-Function that is invoked when the toolbar button is pressed.
+@prop [onCommand] {Function}
+ A option function that is invoked when the toolbar button is pressed.
+
+@prop [panel] {Panel}
+  A optional panel.
 </api>
 
 <api name="destroy">
