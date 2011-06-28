@@ -123,11 +123,6 @@ exports.testUnloadingWindow = function(test) {
             }
           }, 1);
         }, 1);
-/*
-        timer.setTimeout(function() {
-          myWindow.close();
-        }, 1);
-*/
       }
     },
     onUntrack: function(window) {
