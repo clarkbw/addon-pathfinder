@@ -69,7 +69,7 @@ toolbar button to new windows.
 Options which describe the position to move the toolbar button to, with the
 following parameters:
 
-@prop tooblarID {String}
+@prop toolbarID {String}
 The id of the toolbar which you want to add the toolbar button to.
 
 Example toolbar IDs:
