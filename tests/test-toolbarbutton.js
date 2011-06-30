@@ -45,19 +45,38 @@ function createToolbarButton(options, test) {
   var tbb = toolbarbutton.ToolbarButton(options);
   test.assertEqual(!$(options.id), true);
   tbb.moveTo(options);
-  var button = $(options.id);
-  test.assertEqual(!button, false);
-  test.assertEqual(button.parentNode, $(options.toolbarID));
-  test.assertEqual(button.id, options.id);
-  test.assertEqual(button.label, options.label);
   return tbb;
 };
 
 exports.testTBBExists = function(test) {
-  createToolbarButton({
+  var options = {
     id: "test-tbb",
     label: "test",
     toolbarID: "nav-bar",
     forceMove: true
-  }, test);
+  };
+  function exists(button) {
+    test.assertEqual(!button, false);
+    test.assertEqual(button.parentNode, $(options.toolbarID));
+    test.assertEqual(button.id, options.id);
+    test.assertEqual(button.label, options.label);
+    test.assertEqual(button.image, "");
+  }
+  var tbb = createToolbarButton(options, test);
+  exists($(options.id));
+  tbb.destroy();
+  test.assertEqual(!$(options.id), true);
+  var tbb = createToolbarButton(options, test);
+  exists($(options.id));
+  tbb.destroy();
 };
+
+exports.testTBBDoesNotExist = function(test) {
+  var options = {
+    id: "test-tbb2",
+    label: "test"
+  };
+  var tbb = createToolbarButton(options, test);
+  test.assertEqual(!$(options.id), true);
+};
+
