@@ -62,8 +62,7 @@ toolbar button to new windows.
 
 <api name="moveTo">
 @method
-Removes the toolbar button from all open windows and no longer adds the
-toolbar button to new windows.
+Moves the toolbar button on all open windows to the desired location.
 
 @param options {Object}
 Options which describe the position to move the toolbar button to, with the
