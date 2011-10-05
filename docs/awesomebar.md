@@ -58,3 +58,4 @@ The `awesomebar` API provides a simple way to create AwesomeBar suggestions.
 @method
   Removes the AwesomeBar suggester.
 </api>
+</api>
