@@ -1,0 +1,6 @@
+{
+    "name": "addonprovider",
+    "author": "Erik Vold (http://erikvold.com/) <erikvvold@gmail.com>",
+    "version": "1.0",
+    "dependencies": ["api-utils"]
+}
