@@ -1,7 +1,7 @@
 <!-- contributed by Erik Vold [erikvvold@gmail.com]  -->
 
 
-The `toolbarbutton` API provides a dead simple way to create
+The `toolbarbutton` API provides a simple way to create
 [toolbar buttons](https://developer.mozilla.org/en/XUL/toolbarbutton), which
 can perform an action when clicked.
 
