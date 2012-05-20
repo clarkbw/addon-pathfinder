@@ -39,6 +39,9 @@ Creates a `menuitem`.
 @prop id {String}
 A id for the `menuitem`, this should be namespaced.
 
+@prop menuid {String}
+The id of the parent `<menu>` node.
+
 @prop label {String}
 A label for the `menuitem`.
 
