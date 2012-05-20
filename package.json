@@ -1,0 +1,8 @@
+{
+    "name": "ziputils",
+    "description": "Zip Utils for Jetpacks",
+    "author": "Erik Vold (http://erikvold.com/) <erikvvold@gmail.com>",
+    "version": "0.1",
+    "license": "MIT/X11",
+    "dependencies": ["api-utils"]
+}
