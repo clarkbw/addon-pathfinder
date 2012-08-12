@@ -26,4 +26,30 @@ exports.testPanicInPanic = function(test) {
   panic.panic();
 };
 
+// TEST: on and off methods
+exports.testPanicOnOff = function(test) {
+  test.waitUntilDone();
 
+  let count = 0;
+
+  panic.on('start', function panicOn() {
+    panic.off('start', panicOn);
+    count++;
+
+    panic.once('start', function() {
+      if (count > 1) {
+        test.fail('panic.on was called too many times');
+      }
+      else {
+        test.pass('panic.on was only called once');
+      }
+
+      // end test
+      test.done();
+    });
+
+    panic.panic(50);
+  });
+
+  panic.panic();
+};
