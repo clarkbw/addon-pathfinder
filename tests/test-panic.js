@@ -4,7 +4,10 @@
 "use strict";
 
 const panic = require('panic');
-const { Loader } = require("test-harness/loader");
+const prefs = require('preferences-service');
+const { Loader } = require('test-harness/loader');
+
+const PREF_END_NAME = 'security.addon.panic_end';
 
 // TEST: the inPanic variable and panic events
 exports.testPanicInPanic = function(test) {
@@ -51,7 +54,9 @@ exports.testPanicOnOff = function(test) {
       });
     });
 
-    panic.panic(50);
+    panic.once('end', function() {
+      panic.panic(50);
+    });
   });
 
   panic.panic();
@@ -80,4 +85,29 @@ exports.testPanicFiresInMultipleInstances = function(test) {
   panic2.once('start', testCounter);
 
   panic.panic();
+};
+
+exports.testEndTimestamp = function(test) {
+  test.waitUntilDone();
+
+  let ms = 50;
+  let min = Date.now() + ms;
+  let endTimestamp;
+
+  panic.once('end', function() {
+    let now = Date.now();
+    let max = (now + ms);
+
+    test.assert(min <= endTimestamp, 'timestamp is gte to min');
+    test.assert(min <= now, 'end event is gte to min');
+    test.assert(max >= endTimestamp, 'timestamp is lte to max');
+    test.assert(max >= now, 'end event is lte to max');
+
+    // end test
+    test.done();
+  });
+
+  panic.panic(ms);
+
+  endTimestamp = prefs.get(PREF_END_NAME);
 };
