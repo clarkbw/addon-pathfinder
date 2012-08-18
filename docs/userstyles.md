@@ -5,12 +5,13 @@ pages.
 
 ## Example ##
 
-    require("unload").load(require("self").data.url("style.css"));
+    // loads a user stylesheet
+    require("userstyles").load(require("self").data.url("style.css"));
 
 <api name="load">
 @function
-  Loads css/userstyles which will be automatically removed when the add-on
-  unloads.
+  Loads css (aka userstyles) to the browser which will be automatically removed
+  when the add-on unloads.
 
 @param url {string}
   The url of a css file.
