@@ -4,6 +4,7 @@
 "use strict";
 
 const userstyles = require('userstyles');
+const { Loader } = require("test-harness/loader");
 
 const TEST_CSS_URL = module.uri.replace(/\.js$/, ".css");
 const TEST_FNF_URL = module.uri.replace(/\.js$/, ".x.css");
@@ -54,3 +55,12 @@ exports.testLoadAgent = function(test) {
   userstyles.unload(TEST_CSS_URL, {type: 'agent'});
   test.assertEqual(userstyles.registered(TEST_CSS_URL, {type: 'agent'}), false, 'css was unregistered.');
 };
+
+exports.testUnload = function(test) {
+  test.assertEqual(userstyles.registered(TEST_CSS_URL), false, 'css is unregistered.');
+  let loader = Loader(module);
+  loader.require('userstyles').load(TEST_CSS_URL);
+  test.assert(userstyles.registered(TEST_CSS_URL), 'css was registered.');
+  loader.unload();
+  test.assertEqual(userstyles.registered(TEST_CSS_URL), false, 'css was unregistered.');
+}
