@@ -3,7 +3,7 @@
     "description": "Userstyles for Jetpacks",
     "keywords": ["css", "style", "design", "userstyle", "userstyles"],
     "author": "Erik Vold (http://erikvold.com/) <erikvvold@gmail.com>",
-    "version": "1.0",
-    "license": "MPL 1.1/GPL 2.0/LGPL 2.1",
+    "version": "1.1",
+    "license": "MPL 2.0",
     "dependencies": ["api-utils"]
 }

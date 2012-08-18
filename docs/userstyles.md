@@ -14,4 +14,12 @@ pages.
 
 @param url {string}
   The url of a css file.
+
+@param options {object}
+  Some options for the stylesheet.
+
+@prop type {String}
+  The type for the stylesheet, there are two types 'agent' and 'user'.
+  The default should be used when possible, which is 'user'.
+
 </api>
