@@ -80,7 +80,7 @@ exports.testTBBLabelChange = function(test) {
   test.done();
 };
 
-exports.testTBBIconChange = function(test) {
+exports.testTBBPropertyChange = function(test) {
   test.waitUntilDone();
 
   var options = {
@@ -88,16 +88,21 @@ exports.testTBBIconChange = function(test) {
     label: "test",
     toolbarID: "nav-bar",
     forceMove: true,
-    image: TEST_ICON_URL
+    image: TEST_ICON_URL,
+    tooltiptext: 'a'
   };
 
   let tbb = createToolbarButton(options, test);
   buttonExists($(options.id), options, test);
   test.assertEqual($(options.id).image, TEST_ICON_URL, 'the image is correct');
   test.assertEqual(tbb.image, TEST_ICON_URL, 'the image is correct');
+  test.assertEqual(tbb.tooltiptext, 'a', 'the tooltiptext is correct');
   tbb.setIcon({url: TEST_ICON_BLACK_URL});
   test.assertEqual($(options.id).image, TEST_ICON_BLACK_URL, 'the image is changed');
   test.assertEqual(tbb.image, TEST_ICON_BLACK_URL, 'the image is changed');
+  tbb.tooltiptext = 'b';
+  test.assertEqual($(options.id).getAttribute('tooltiptext'), 'b', 'the tooltiptext is changed');
+  test.assertEqual(tbb.tooltiptext, 'b', 'the tooltiptext is changed');
 
   tbb.destroy();
   test.done();
