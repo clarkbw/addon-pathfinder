@@ -1,44 +1,14 @@
-/* ***** BEGIN LICENSE BLOCK *****
- * Version: MPL 1.1/GPL 2.0/LGPL 2.1
- *
- * The contents of this file are subject to the Mozilla Public License Version
- * 1.1 (the "License"); you may not use this file except in compliance with
- * the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
- *
- * Software distributed under the License is distributed on an "AS IS" basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
- * for the specific language governing rights and limitations under the
- * License.
- *
- * The Initial Developer of the Original Code is Erik Vold
- * Portions created by the Initial Developer are Copyright (C) 2011
- * the Initial Developer. All Rights Reserved.
- *
- * Contributor(s):
- *   Erik Vold <erikvvold@gmail.com> (Original Author)
- *
- * Alternatively, the contents of this file may be used under the terms of
- * either the GNU General Public License Version 2 or later (the "GPL"), or
- * the GNU Lesser General Public License Version 2.1 or later (the "LGPL"),
- * in which case the provisions of the GPL or the LGPL are applicable instead
- * of those above. If you wish to allow use of your version of this file only
- * under the terms of either the GPL or the LGPL, and not to allow others to
- * use your version of this file under the terms of the MPL, indicate your
- * decision by deleting the provisions above and replace them with the notice
- * and other provisions required by the GPL or the LGPL. If you do not delete
- * the provisions above, a recipient may use your version of this file under
- * the terms of any one of the MPL, the GPL or the LGPL.
- *
- * ***** END LICENSE BLOCK ***** */
+'use strict';
 
 const windowUtils = require("window-utils");
 const toolbarbutton = require("toolbarbutton");
+
 const NS_XUL = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
 
-let window = windowUtils.activeBrowserWindow;
-let document = window.document;
-function $(id) document.getElementById(id);
+const TEST_ICON_URL = module.uri.replace(/[^\.\\\/]*\.js$/, "test.png");
+const TEST_ICON_BLACK_URL = module.uri.replace(/[^\.\\\/]*\.js$/, "black.png");
+
+function $(id) windowUtils.activeBrowserWindow.document.getElementById(id);
 
 function createToolbarButton(options, test) {
   test.assertEqual(!$(options.id), true);
@@ -46,7 +16,19 @@ function createToolbarButton(options, test) {
   test.assertEqual(!$(options.id), true);
   tbb.moveTo(options);
   return tbb;
-};
+}
+
+function buttonExists(button, options, test) {
+  test.assertEqual(!button, false, 'test button');
+  test.assertEqual(button.parentNode, $(options.toolbarID), 'test parent');
+  test.assertEqual(button.id, options.id, 'test id');
+  if (options.label)
+    test.assertEqual(button.label, options.label, 'test label');
+  if (options.image)
+    test.assertEqual(button.image, options.image);
+  else
+    test.assertEqual(button.image, "");
+}
 
 exports.testTBBExists = function(test) {
   var options = {
@@ -55,19 +37,12 @@ exports.testTBBExists = function(test) {
     toolbarID: "nav-bar",
     forceMove: true
   };
-  function exists(button) {
-    test.assertEqual(!button, false);
-    test.assertEqual(button.parentNode, $(options.toolbarID));
-    test.assertEqual(button.id, options.id);
-    test.assertEqual(button.label, options.label);
-    test.assertEqual(button.image, "");
-  }
+
   var tbb = createToolbarButton(options, test);
-  exists($(options.id));
+  buttonExists($(options.id), options, test);
   tbb.destroy();
   test.assertEqual(!$(options.id), true);
   var tbb = createToolbarButton(options, test);
-  exists($(options.id));
   tbb.destroy();
 };
 
@@ -77,6 +52,47 @@ exports.testTBBDoesNotExist = function(test) {
     label: "test"
   };
   var tbb = createToolbarButton(options, test);
-  test.assertEqual(!$(options.id), true);
+  var tbbEle = $(options.id);
+  test.assertEqual(!tbbEle, true, 'toolbar button dne');
+  tbb.destroy();
 };
 
+exports.testTBBLabelChange = function(test) {
+  test.waitUntilDone();
+
+  var options = {
+    id: "test-tbb3",
+    label: "test",
+    toolbarID: "nav-bar",
+    forceMove: true
+  };
+
+  let tbb = createToolbarButton(options, test);
+  buttonExists($(options.id), options, test);
+  tbb.label = 'test change';
+  test.assertEqual($(options.id).label, 'test change', 'the label is changed');
+
+  tbb.destroy();
+  test.done();
+};
+
+exports.testTBBIconChange = function(test) {
+  test.waitUntilDone();
+
+  var options = {
+    id: "test-tbb4",
+    label: "test",
+    toolbarID: "nav-bar",
+    forceMove: true,
+    image: TEST_ICON_URL
+  };
+
+  let tbb = createToolbarButton(options, test);
+  buttonExists($(options.id), options, test);
+  test.assertEqual($(options.id).image, TEST_ICON_URL, 'the image is correct');
+  tbb.setIcon({url: TEST_ICON_BLACK_URL});
+  test.assertEqual($(options.id).image, TEST_ICON_BLACK_URL, 'the image is changed');
+
+  tbb.destroy();
+  test.done();
+};
