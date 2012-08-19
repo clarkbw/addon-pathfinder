@@ -1,3 +1,6 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 'use strict';
 
 const windowUtils = require("window-utils");
@@ -71,6 +74,7 @@ exports.testTBBLabelChange = function(test) {
   buttonExists($(options.id), options, test);
   tbb.label = 'test change';
   test.assertEqual($(options.id).label, 'test change', 'the label is changed');
+  test.assertEqual(tbb.label, 'test change', 'the label is changed');
 
   tbb.destroy();
   test.done();
@@ -90,9 +94,13 @@ exports.testTBBIconChange = function(test) {
   let tbb = createToolbarButton(options, test);
   buttonExists($(options.id), options, test);
   test.assertEqual($(options.id).image, TEST_ICON_URL, 'the image is correct');
+  test.assertEqual(tbb.image, TEST_ICON_URL, 'the image is correct');
   tbb.setIcon({url: TEST_ICON_BLACK_URL});
   test.assertEqual($(options.id).image, TEST_ICON_BLACK_URL, 'the image is changed');
+  test.assertEqual(tbb.image, TEST_ICON_BLACK_URL, 'the image is changed');
 
   tbb.destroy();
   test.done();
 };
+
+
