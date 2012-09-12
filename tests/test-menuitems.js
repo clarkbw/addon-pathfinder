@@ -102,3 +102,17 @@ exports.testMIDisabled = function(test) {
   commandIsOK = true;
   menuitem.dispatchEvent(e);
 };
+
+exports.testMIClass = function(test) {
+  let options = {
+    id: "test-mi-class",
+    label: "pizazz",
+    className: "pizazz",
+    menuid: 'menu_FilePopup',
+  };
+
+  var mi = createMI(options, test);
+  let menuitem = $(options.id);
+  test.assertEqual(!!menuitem, true, 'menuitem exists');
+  test.assertEqual(menuitem.getAttribute('class'), 'pizazz', 'menuitem not disabled');
+};

@@ -17,6 +17,7 @@ can perform an action when clicked, and display state.
         "label": _("label"),
         "accesskey": _("label.ak"),
         image: self.data.url("icon.png"),
+        className: 'pizazz',
         onCommand: function() {
           // do something
         }
