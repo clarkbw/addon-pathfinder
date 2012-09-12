@@ -31,7 +31,7 @@ exports.testMIDoesExist = function(test) {
     label: "test",
     menuid: 'menu_FilePopup'
   };
-  createMI(options, test);
+  let mi = createMI(options, test);
   let menuitem = $(options.id);
   test.assertEqual(!!menuitem, true, 'menuitem exists');
   test.assertEqual(menuitem.id, options.id, 'menuitem id is ok');
@@ -41,6 +41,9 @@ exports.testMIDoesExist = function(test) {
   test.assertEqual(menuitem.getAttribute('accesskey'), '', 'menuitem accesskey is ok');
   test.assertEqual(menuitem.getAttribute('class'), '', 'menuitem class is ok');
   test.assertEqual(menuitem.nextSibling, undefined, 'menuitem is last');
+  mi.destroy();
+  test.assert(!$(options.id), 'menuitem is gone');
+  test.assertEqual(menuitem.parentNode, null, 'menuitem has no parent');
 };
 
 exports.testMIOnClick = function(test) {
@@ -51,7 +54,7 @@ exports.testMIOnClick = function(test) {
     label: "test",
     menuid: 'menu_FilePopup',
     onCommand: function() {
-      mi.detroy();
+      mi.destroy();
       test.pass('onCommand worked!');
       test.done();
     }
@@ -83,7 +86,7 @@ exports.testMIDisabled = function(test) {
         return;
       }
 
-      mi.detroy();
+      mi.destroy();
       test.assertEqual(count, 1, 'onCommand was called the correct number of times!');
       test.done();
     }
