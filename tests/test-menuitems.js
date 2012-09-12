@@ -32,7 +32,15 @@ exports.testMIDoesExist = function(test) {
     menuid: 'menu_FilePopup'
   };
   createMI(options, test);
-  test.assertEqual(!!$(options.id), true, 'menuitem exists');
+  let menuitem = $(options.id);
+  test.assertEqual(!!menuitem, true, 'menuitem exists');
+  test.assertEqual(menuitem.id, options.id, 'menuitem id is ok');
+  test.assertEqual(menuitem.getAttribute('label'), options.label, 'menuitem label is ok');
+  test.assertEqual(menuitem.parentNode.id, options.menuid, 'in the file menu');
+  test.assertEqual(menuitem.getAttribute('disabled'), '', 'menuitem not disabled');
+  test.assertEqual(menuitem.getAttribute('accesskey'), '', 'menuitem accesskey is ok');
+  test.assertEqual(menuitem.getAttribute('class'), '', 'menuitem class is ok');
+  test.assertEqual(menuitem.nextSibling, undefined, 'menuitem is last');
 };
 
 exports.testMIOnClick = function(test) {
