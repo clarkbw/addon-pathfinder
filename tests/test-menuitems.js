@@ -31,3 +31,26 @@ exports.testMIDoesExist = function(test) {
   createMI(options, test);
   test.assertEqual(!!$(options.id), true, 'menuitem exists');
 };
+
+exports.testMIOnClick = function(test) {
+  test.waitUntilDone();
+
+  let options = {
+    id: "test-mi-onclick",
+    label: "test",
+    menuid: 'menu_FilePopup',
+    onCommand: function() {
+      mi.detroy();
+      test.pass('onCommand worked!');
+      test.done();
+    }
+  };
+
+  let e = document.createEvent("UIEvents");
+  e.initUIEvent("command", true, true, window, 1);
+
+  var mi = createMI(options, test);
+  let menuitem = $(options.id);
+  test.assertEqual(!!menuitem, true, 'menuitem exists');
+  menuitem.dispatchEvent(e);
+};
