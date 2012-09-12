@@ -37,7 +37,7 @@ exports.testMIDoesExist = function(test) {
   test.assertEqual(menuitem.id, options.id, 'menuitem id is ok');
   test.assertEqual(menuitem.getAttribute('label'), options.label, 'menuitem label is ok');
   test.assertEqual(menuitem.parentNode.id, options.menuid, 'in the file menu');
-  test.assertEqual(menuitem.getAttribute('disabled'), '', 'menuitem not disabled');
+  test.assertEqual(menuitem.getAttribute('disabled'), 'false', 'menuitem not disabled');
   test.assertEqual(menuitem.getAttribute('accesskey'), '', 'menuitem accesskey is ok');
   test.assertEqual(menuitem.getAttribute('class'), '', 'menuitem class is ok');
   test.assertEqual(menuitem.nextSibling, undefined, 'menuitem is last');
@@ -63,5 +63,42 @@ exports.testMIOnClick = function(test) {
   var mi = createMI(options, test);
   let menuitem = $(options.id);
   test.assertEqual(!!menuitem, true, 'menuitem exists');
+  menuitem.dispatchEvent(e);
+};
+
+exports.testMIDisabled = function(test) {
+  test.waitUntilDone();
+
+  let commandIsOK = false;
+  let count = 0;
+  let options = {
+    id: "test-mi-disabled",
+    label: "test",
+    disabled: true,
+    menuid: 'menu_FilePopup',
+    onCommand: function() {
+      count++;
+      if (!commandIsOK) {
+        test.fail('onCommand was called, that is not ok');
+        return;
+      }
+
+      mi.detroy();
+      test.assertEqual(count, 1, 'onCommand was called the correct number of times!');
+      test.done();
+    }
+  };
+
+  let e = document.createEvent("UIEvents");
+  e.initUIEvent("command", true, true, window, 1);
+
+  var mi = createMI(options, test);
+  let menuitem = $(options.id);
+  test.assertEqual(!!menuitem, true, 'menuitem exists');
+  test.assertEqual(menuitem.getAttribute('disabled'), 'true', 'menuitem not disabled');
+  menuitem.dispatchEvent(e);
+  mi.disabled = false;
+  test.assertEqual(menuitem.getAttribute('disabled'), 'false', 'menuitem not disabled');
+  commandIsOK = true;
   menuitem.dispatchEvent(e);
 };
