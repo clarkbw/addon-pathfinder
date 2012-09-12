@@ -18,6 +18,8 @@ can perform an action when clicked, and display state.
         "accesskey": _("label.ak"),
         image: self.data.url("icon.png"),
         className: 'pizazz',
+        disabled: false,
+        checked: false,
         onCommand: function() {
           // do something
         }
@@ -51,6 +53,12 @@ A image url for the `menuitem`.
 
 @prop className {String}
 A default space delimited list of class names for the menuitem.
+
+@prop disabled {Boolean}
+When a menuitem is disabled it cannot be used, but is still displayed.
+
+@prop checked {Boolean}
+Displays a check beside the menuitem.
 
 @prop [onCommand] {Function}
  A option function that is invoked when the `menuitem` is executed.

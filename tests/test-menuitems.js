@@ -41,6 +41,7 @@ exports.testMIDoesExist = function(test) {
   test.assertEqual(menuitem.getAttribute('accesskey'), '', 'menuitem accesskey is ok');
   test.assertEqual(menuitem.getAttribute('class'), '', 'menuitem class is ok');
   test.assertEqual(menuitem.nextSibling, undefined, 'menuitem is last');
+  test.assertEqual(menuitem.hasAttribute("checked"), false, 'menuitem not checked');
   mi.destroy();
   test.assert(!$(options.id), 'menuitem is gone');
   test.assertEqual(menuitem.parentNode, null, 'menuitem has no parent');
@@ -106,6 +107,24 @@ exports.testMIDisabled = function(test) {
   menuitem.dispatchEvent(e);
 };
 
+exports.testMIChecked = function(test) {
+  let options = {
+    id: "test-mi-checked",
+    label: "test",
+    disabled: true,
+    menuid: 'menu_FilePopup',
+    checked: true
+  };
+
+  let mi = createMI(options, test);
+  let menuitem = $(options.id);
+  test.assertEqual(!!menuitem, true, 'menuitem exists');
+  test.assertEqual(menuitem.getAttribute("checked"), "true", 'menuitem checked');
+  mi.checked = false;
+  test.assertEqual(menuitem.getAttribute("checked"), "false", 'menuitem checked');
+  mi.destroy();
+};
+
 exports.testMIClass = function(test) {
   let options = {
     id: "test-mi-class",
@@ -118,4 +137,5 @@ exports.testMIClass = function(test) {
   let menuitem = $(options.id);
   test.assertEqual(!!menuitem, true, 'menuitem exists');
   test.assertEqual(menuitem.getAttribute('class'), 'pizazz', 'menuitem not disabled');
+  mi.destroy();
 };
