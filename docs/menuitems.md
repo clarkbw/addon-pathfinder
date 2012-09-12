@@ -49,6 +49,9 @@ A label for the `menuitem`.
 @prop image {String}
 A image url for the `menuitem`.
 
+@prop className {String}
+A default space delimited list of class names for the menuitem.
+
 @prop [onCommand] {Function}
  A option function that is invoked when the `menuitem` is executed.
 </api>
