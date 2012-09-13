@@ -139,3 +139,33 @@ exports.testMIClass = function(test) {
   test.assertEqual(menuitem.getAttribute('class'), 'pizazz', 'menuitem not disabled');
   mi.destroy();
 };
+
+exports.testInsertBeforeExists = function(test) {
+  let options = {
+    id: 'test-mi-insertbefore',
+    label: 'insertbefore',
+    insertbefore:'menu_FileQuitItem',
+    menuid: 'menu_FilePopup',
+  };
+
+  var mi = createMI(options, test);
+  let menuitem = $(options.id);
+  test.assertEqual(!!menuitem, true, 'menuitem exists');
+  test.assertEqual(menuitem.nextSibling, $('menu_FileQuitItem'), 'menuitem not disabled');
+  mi.destroy();
+};
+
+exports.testInsertBeforeDoesNotExist = function(test) {
+  let options = {
+    id: 'test-mi-insertbefore',
+    label: 'insertbefore',
+    insertbefore:'menu_ZZZDNE',
+    menuid: 'menu_FilePopup',
+  };
+
+  var mi = createMI(options, test);
+  let menuitem = $(options.id);
+  test.assertEqual(!!menuitem, true, 'menuitem exists');
+  test.assertEqual(menuitem.nextSibling, null, 'menuitem not disabled');
+  mi.destroy();
+};
