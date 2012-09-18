@@ -1,0 +1,7 @@
+{
+  "name": "findbar",
+  "fullName": "findbar-jplib",
+  "license": "MPL 2.0",
+  "version": "0.1",
+  "dependencies": ["vold-utils", "api-utils"]
+}
