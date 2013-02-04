@@ -22,7 +22,8 @@ function createToolbarButton(options, test) {
   test.assertEqual(!$(options.id), true);
 
   tbb.moveTo(options);
-  test.assertEqual(!$(options.id), false);
+  if (options.toolbarID)
+    test.assertEqual(!$(options.id), false);
 
   return tbb;
 }
