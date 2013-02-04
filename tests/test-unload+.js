@@ -4,9 +4,9 @@
 "use strict";
 
 var timer = require("timer");
-var {Cc,Ci} = require("chrome");
-const windowUtils = require("window-utils");
-const { Loader } = require('test-harness/loader');
+var { Cc,Ci } = require("chrome");
+const windowUtils = require("sdk/deprecated/window-utils");
+const { Loader } = require('sdk/test/loader');
 
 function makeEmptyWindow() {
   var xulNs = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
@@ -23,14 +23,13 @@ function makeEmptyWindow() {
   return ww.openWindow(null, url, null, features.join(","), null);
 }
 
-exports.testUnloading = function(test) {
+exports.testUnloading = function(assert) {
   var loader = Loader(module);
   var {unload} = loader.require("unload+");
   var unloadCalled = 0;
 
   function unloader() {
     unloadCalled++;
-    throw "error";
   }
   unload(unloader);
 
@@ -44,13 +43,11 @@ exports.testUnloading = function(test) {
   removeUnloader2();
 
   loader.unload();
-  test.assertEqual(
-      unloadCalled, 2, "Unloader functions are called on unload.");
+
+  assert.equal(unloadCalled, 2, "Unloader functions are called on unload.");
 };
 
-exports.testUnloadingWindow = function(test) {
-  test.waitUntilDone();
-
+exports.testUnloadingWindow = function(assert, done) {
   var loader = Loader(module);
   var {unload} = loader.require("unload+");
   var unloadCalled = 0;
@@ -60,7 +57,7 @@ exports.testUnloadingWindow = function(test) {
   var delegate = {
     onTrack: function(window) {
       if (window == myWindow) {
-        test.pass("onTrack() called with our test window");
+        assert.pass("onTrack() called with our test window");
 
         let unloader = function unloader() {
           unloadCalled++;
@@ -71,45 +68,47 @@ exports.testUnloadingWindow = function(test) {
         timer.setTimeout(function() {
           window.close();
 
-          test.assertEqual(
-                unloadCalled, 0, "no unloaders called.");
+          assert.equal(unloadCalled, 1, "unloader was still called.");
 
           if (window.closed) {
-            test.pass("window closed");
-          } else {
-            test.fail("window is not closed!");
+            assert.pass("window closed");
+          }
+          else {
+            assert.fail("window is not closed!");
           }
 
           timer.setTimeout(function() {
-            test.assertEqual(
-                unloadCalled, 0, "zero unloaders called.");
+            assert.equal(unloadCalled, 1, "unloader was called.");
+
+            unload(function() {
+              assert.equal(unloadCalled, 2, "two unloaders called.");
+
+              if (finished) {
+                assert.pass("finished");
+                done();
+              }
+              else {
+                assert.fail("not finished!");
+              }
+            });
 
             loader.unload();
-
-            test.assertEqual(
-                  unloadCalled, 1, "one unloaders called.");
-
-            if (finished) {
-              test.pass("finished");
-              test.done();
-            } else {
-              test.fail("not finished!");
-            }
           }, 1);
         }, 1);
       }
     },
     onUntrack: function(window) {
       if (window == myWindow) {
-        test.pass("onUntrack() called with our test window");
+        assert.pass("onUntrack() called with our test window");
 
-          if (!finished) {
-            finished = true;
-            myWindow = null;
-            wt.unload();
-          } else {
-            test.fail("finishTest() called multiple times.");
-          }
+        if (!finished) {
+          finished = true;
+          myWindow = null;
+          wt.unload();
+        }
+        else {
+          assert.fail("finishTest() called multiple times.");
+        }
       }
     }
   };
@@ -117,3 +116,35 @@ exports.testUnloadingWindow = function(test) {
   var wt = new windowUtils.WindowTracker(delegate);
   myWindow = makeEmptyWindow();
 };
+
+exports.testUnloaderExecutionOnWindowClose = function(assert, done) {
+  var loader = Loader(module);
+  var {unload} = loader.require("unload+");
+  var unloadCalled = 0;
+  var finished = false;
+  var myWindow;
+  var unloaderRan = false;
+
+  var delegate = {
+    onTrack: function(window) {
+      if (window != myWindow) return;
+
+      unload(function() unloaderRan = true, window);
+      window.close();
+    },
+    onUntrack: function(window) {
+      if (window != myWindow) return;
+
+      loader.require('timer').setTimeout(function() {
+        assert.ok(unloaderRan, 'test complete');
+        loader.unload();
+        done();
+      }, 0);
+    }
+  };
+
+  var wt = new windowUtils.WindowTracker(delegate);
+  myWindow = makeEmptyWindow();
+};
+
+require("test").run(exports);
