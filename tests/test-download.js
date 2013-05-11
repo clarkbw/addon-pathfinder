@@ -6,6 +6,7 @@
 const { Ci, Cc, Cu } = require('chrome');
 const { pathFor } = require("sdk/system");
 const { Loader } = require("sdk/test/loader");
+const { Request } = require('sdk/request');
 const options = require("@test/options");
 
 const { Download } = require('download');
@@ -17,10 +18,11 @@ exports.testDownload = function(assert, done) {
   const httpd = loader.require("sdk/test/httpd");
   const { startServerAsync } = httpd;
 
-  let serverPort = 8054;
+  let serverPort = 8056;
   let server = httpd.startServerAsync(serverPort);
+  const contents = "testDownload";
   server.registerPathHandler("/test.txt", function handle(request, response) {
-    response.write('TEST');
+    response.write(contents);
   });
 
   let file = Services.dirsvc.get("ProfD", Ci.nsIFile);
@@ -32,10 +34,18 @@ exports.testDownload = function(assert, done) {
     destination: file.path,
     onComplete: function() {
       assert.ok(file.exists(), 'Download was successful');
-      file.remove(false);
-      assert.ok(!file.exists(), 'File was removed');
-      loader.unload();
-      done();
+
+      Request({
+        url: Services.io.newFileURI(file).spec,
+        overrideMimeType: "text/plain; charset=latin1",
+        onComplete: function ({ text }) {
+          assert.equal(text, contents, 'the file content is correct');
+          file.remove(false);
+          assert.ok(!file.exists(), 'File was removed');
+          loader.unload();
+          done();
+        }
+      }).get();
     }
   });
   assert.ok(!!download, 'Download started');
