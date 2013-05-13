@@ -5,7 +5,7 @@
 
 const { Loader } = require('sdk/test/loader');
 const tabs = require('sdk/tabs');
-const { setTimeout } = require('sdk/timers');
+const timers = require('sdk/timers');
 
 const cp = require('content-policy');
 
@@ -20,6 +20,8 @@ exports.testContentPolicyDestroy = function(assert, done) {
   const httpd = loader.require('sdk/test/httpd');
   const { ContentPolicy } = loader.require('content-policy')
   const { startServerAsync } = httpd;
+  const { setTimeout } = timers;
+
   let tabsCount = tabs.length;
   let tab1;
 
@@ -34,8 +36,6 @@ exports.testContentPolicyDestroy = function(assert, done) {
   });
 
   let url = 'http://localhost:' + serverPort + '/test.html';
-
-  let rejected = false;
   let policy = ContentPolicy({
     shouldLoad: function({ location }) {
       if (location.toString() != url)
@@ -55,9 +55,6 @@ exports.testContentPolicyDestroy = function(assert, done) {
         assert.pass('tab2 opening..');
       }, 0);
       return false;
-    },
-    shouldProcess: function({ location }) {
-      assert.pass('shouldLoad: ' + location);
     }
   });
   assert.pass('Content policy is setup');
@@ -82,6 +79,76 @@ exports.testContentPolicyDestroy = function(assert, done) {
     });
 
     assert.pass('tab1 opening..');
+  }, 500);
+};
+
+exports.testContentPolicyUnload = function(assert, done) {
+  const loader = Loader(module);
+  const { ContentPolicy } = loader.require('content-policy');
+  const { setTimeout } = loader.require('sdk/timers');
+
+  let tabsCount = tabs.length;
+  let tab1;
+  let otherTabs = [];
+  let calls = 0;
+  let expectedCalls = 1;
+  let url = 'data:text/html;charset=utf-8,testContentPolicyUnload';
+  let policy = ContentPolicy({
+  	contract: '@erikvold.com/content-policy.TEST;unload',
+    shouldLoad: function({ location }) {
+      if (location.toString() != url)
+        return true;
+
+      calls++;
+      setTimeout(function() {
+        loader.unload();
+
+        assert.pass('tab2 opening..');
+        tabs.open({
+          url: url,
+          inBackground: true,
+          onOpen: function(tab) {
+          	otherTabs.push(tab);
+          },
+          onReady: function (tab2) {
+            assert.equal(tab2.url, url, url);
+            expectedCalls = otherTabs.length;
+
+            // close tabs
+            (function ender() {
+              if (otherTabs.length <= 0)
+                return tab1.close();
+              otherTabs.pop().close();
+              ender(otherTabs);
+            })()
+          }
+        });
+        assert.pass('tab2 open called.');
+      }, 0);
+
+      return false;
+    }
+  });
+  assert.pass('Content policy is setup');
+
+  setTimeout(function() {
+    assert.pass('tab1 opening..');
+    tabs.open({
+      url: url,
+      inBackground: true,
+      onOpen: function (tab) {
+        tab1 = tab;
+        assert.equal(tab1.url, 'about:blank', 'tab1 opened - about:blank');
+      },
+      onReady: function() {
+        assert.fail('tab1 loaded..');
+      },
+      onClose: function() {
+      	assert.equal(calls, expectedCalls, 'content policy only rejected expected number of times');
+        //assert.equal(tabsCount, tabs.length, 'all test tabs are closed');
+        done();
+      }
+    });
   }, 500);
 };
 
