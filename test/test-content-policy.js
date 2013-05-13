@@ -38,7 +38,7 @@ exports.testContentPolicyDestroy = function(assert, done) {
   let url = 'http://localhost:' + serverPort + '/test.html';
   let policy = ContentPolicy({
     shouldLoad: function({ location }) {
-      if (location.toString() != url)
+      if (location != url)
         return true;
 
       setTimeout(function() {
@@ -96,7 +96,7 @@ exports.testContentPolicyUnload = function(assert, done) {
   let policy = ContentPolicy({
   	contract: '@erikvold.com/content-policy.TEST;unload',
     shouldLoad: function({ location }) {
-      if (location.toString() != url)
+      if (location != url)
         return true;
 
       calls++;
