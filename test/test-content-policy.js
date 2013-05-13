@@ -37,11 +37,7 @@ exports.testContentPolicyDestroy = function(assert, done) {
 
   let rejected = false;
   let policy = ContentPolicy({
-    description: "Content Policy Unload Test",
-    contract: "@erikvold.com/content-policy-testContentPolicyDestroy",
-    entry: "content-policy.testContentPolicyDestroy",
     shouldLoad: function({ location }) {
-      console.log(location.toString());
       if (location.toString() != url)
         return true;
 
