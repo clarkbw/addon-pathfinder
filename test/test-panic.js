@@ -1,11 +1,11 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-"use strict";
+'use strict';
 
 const panic = require('panic');
 const prefs = require('preferences-service');
-const { Loader } = require('test-harness/loader');
+const { Loader } = require('sdk/test/loader');
 
 const PREF_END_NAME = 'security.addon.panic_end';
 
@@ -90,7 +90,7 @@ exports.testPanicFiresInMultipleInstances = function(test) {
 exports.testEndTimestamp = function(test) {
   test.waitUntilDone();
 
-  let ms = 50;
+  let ms = 0;
   let min = Date.now() + ms;
   let endTimestamp;
 
@@ -98,8 +98,8 @@ exports.testEndTimestamp = function(test) {
     let now = Date.now();
     let max = (now + ms);
 
-    test.assert(min <= endTimestamp, 'timestamp is gte to min');
-    test.assert(min <= now, 'end event is gte to min');
+    test.assert(min <= endTimestamp, endTimestamp + ' is gte ' + min);
+    test.assert(min <= now, now + ' event is gte to ' + min);
     test.assert(max >= endTimestamp, 'timestamp is lte to max');
     test.assert(max >= now, 'end event is lte to max');
 

@@ -1,10 +1,10 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-"use strict";
+'use strict';
 
 const userstyles = require('userstyles');
-const { Loader } = require("test-harness/loader");
+const { Loader } = require("sdk/test/loader");
 
 const TEST_CSS_URL = module.uri.replace(/\.js$/, ".css");
 const TEST_FNF_URL = module.uri.replace(/\.js$/, ".x.css");

@@ -11,16 +11,17 @@ const options = require("@test/options");
 
 const { Download } = require('download');
 
-const { Services } = Cu.import('resource://gre/modules/Services.jsm', {});
+const { Services } = require('services');
 
-exports.testDownload = function(assert, done) {
+exports.testDownload = function(assert, done) {console.log(1)
   const loader = Loader(module);
-  const httpd = loader.require("sdk/test/httpd");
+  const httpd = loader.require('sdk/test/httpd');
   const { startServerAsync } = httpd;
 
-  let serverPort = 8056;
+  let serverPort = 8057;
   let server = httpd.startServerAsync(serverPort);
   const contents = "testDownload";
+
   server.registerPathHandler("/test.txt", function handle(request, response) {
     response.write(contents);
   });
@@ -29,6 +30,7 @@ exports.testDownload = function(assert, done) {
   file.append("test.txt");
 
   assert.ok(!file.exists(), 'Download does not exist yet');
+
   let download = Download({
     url: "http://localhost:" + serverPort + "/test.txt",
     destination: file.path,

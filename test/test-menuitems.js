@@ -3,8 +3,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 'use strict'
 
-const windowUtils = require("window-utils");
-const menuitems = require("menuitems");
+const windowUtils = require('sdk/deprecated/window-utils');
+const menuitems = require('menuitems');
 
 let window = windowUtils.activeBrowserWindow;
 let document = window.document;
