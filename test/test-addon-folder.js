@@ -2,7 +2,7 @@
 
 const JETPACK_DIR_BASENAME = "jetpack";
 
-const FOLDER = require('addon-folder');
+const FOLDER = require('pathfinder/addon/folder');
 
 const { Loader } = require('sdk/test/loader');
 const { Cc, Ci } = require('chrome');
@@ -23,7 +23,7 @@ exports.testFolderCreated = function(assert) {
   assert.ok(file.exists(ADDON_FOLDER_PATH), ADDON_FOLDER_PATH + ' was created');
   FOLDER.destroy();
   assert.ok(!file.exists(ADDON_FOLDER_PATH), ADDON_FOLDER_PATH + ' was destroyed');
-  loader.require('addon-folder');
+  loader.require('pathfinder/addon/folder');
   assert.ok(file.exists(ADDON_FOLDER_PATH), ADDON_FOLDER_PATH + ' was created');
   loader.unload();
   assert.ok(file.exists(ADDON_FOLDER_PATH), ADDON_FOLDER_PATH + 'exists after unload');

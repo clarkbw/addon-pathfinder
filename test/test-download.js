@@ -9,9 +9,9 @@ const { Loader } = require("sdk/test/loader");
 const { Request } = require('sdk/request');
 const options = require("@test/options");
 
-const { Download } = require('download');
+const { Download } = require('pathfinder/download');
 
-const { Services } = require('services');
+const { Services } = require('pathfinder/chrome/services');
 
 exports.testDownload = function(assert, done) {console.log(1)
   const loader = Loader(module);

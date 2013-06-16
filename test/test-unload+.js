@@ -25,7 +25,7 @@ function makeEmptyWindow() {
 
 exports.testUnloading = function(assert) {
   var loader = Loader(module);
-  var {unload} = loader.require("unload+");
+  var {unload} = loader.require("pathfinder/addon/unload");
   var unloadCalled = 0;
 
   function unloader() {
@@ -49,7 +49,7 @@ exports.testUnloading = function(assert) {
 
 exports.testUnloadingWindow = function(assert, done) {
   var loader = Loader(module);
-  var {unload} = loader.require("unload+");
+  var {unload} = loader.require("pathfinder/addon/unload");
   var unloadCalled = 0;
   var finished = false;
   var myWindow;
@@ -119,7 +119,7 @@ exports.testUnloadingWindow = function(assert, done) {
 
 exports.testUnloaderExecutionOnWindowClose = function(assert, done) {
   var loader = Loader(module);
-  var {unload} = loader.require("unload+");
+  var {unload} = loader.require("pathfinder/addon/unload");
   var unloadCalled = 0;
   var finished = false;
   var myWindow;

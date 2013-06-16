@@ -7,7 +7,7 @@ const { Loader } = require('sdk/test/loader');
 const tabs = require('sdk/tabs');
 const timers = require('sdk/timers');
 
-const cp = require('content-policy');
+const cp = require('pathfinder/content/policy');
 
 exports.testConstants = function(assert) {
   assert.ok(cp.REJECT != undefined, 'REJECT constant exists');
@@ -18,7 +18,7 @@ exports.testConstants = function(assert) {
 exports.testContentPolicyDestroy = function(assert, done) {
   const loader = Loader(module);
   const httpd = loader.require('sdk/test/httpd');
-  const { ContentPolicy } = loader.require('content-policy')
+  const { ContentPolicy } = loader.require('pathfinder/content/policy')
   const { startServerAsync } = httpd;
   const { setTimeout } = timers;
 
@@ -84,7 +84,7 @@ exports.testContentPolicyDestroy = function(assert, done) {
 
 exports.testContentPolicyUnload = function(assert, done) {
   const loader = Loader(module);
-  const { ContentPolicy } = loader.require('content-policy');
+  const { ContentPolicy } = loader.require('pathfinder/content/policy');
   const { setTimeout } = loader.require('sdk/timers');
 
   let tabsCount = tabs.length;

@@ -4,7 +4,7 @@
 'use strict'
 
 const windowUtils = require('sdk/deprecated/window-utils');
-const menuitems = require('menuitems');
+const menuitems = require('pathfinder/ui/menuitems');
 
 let window = windowUtils.activeBrowserWindow;
 let document = window.document;
