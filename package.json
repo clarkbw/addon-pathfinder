@@ -1,7 +1,6 @@
 {
-    "name": "vold-utils",
-    "description": "Utilitys for Jetpacks",
-    "author": "Erik Vold (http://erikvold.com/) <erikvvold@gmail.com>",
-    "version": "2.0",
-    "dependencies": ["api-utils"]
+    "name": "addon-pathfinder",
+    "author": "Erik Vold",
+    "version": "1.0"
+    "license": "MPL 2.0"
 }
