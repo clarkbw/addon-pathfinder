@@ -1,3 +1,3 @@
 'use strict';
 
-//const warning = require('pathfinder/ui/warning');
+const warning = require('pathfinder/ui/warning');
