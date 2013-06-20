@@ -15,4 +15,5 @@ The Add-on Pathfinder is the collection of Jetpack modules made by [Erik Vold](h
 * Content policies
 * Content Permissions
 * Awesomebar
+* Modifying Request Headers
 * Much much more!...
