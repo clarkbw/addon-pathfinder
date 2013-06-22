@@ -3,7 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 'use strict';
 
-var timer = require("timer");
+var timer = require("sdk/timers");
 var { Cc,Ci } = require("chrome");
 const windowUtils = require("sdk/deprecated/window-utils");
 const { Loader } = require('sdk/test/loader');
@@ -135,7 +135,7 @@ exports.testUnloaderExecutionOnWindowClose = function(assert, done) {
     onUntrack: function(window) {
       if (window != myWindow) return;
 
-      loader.require('timer').setTimeout(function() {
+      loader.require('sdk/timers').setTimeout(function() {
         assert.ok(unloaderRan, 'test complete');
         loader.unload();
         done();

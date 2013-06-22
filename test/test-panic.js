@@ -4,7 +4,7 @@
 'use strict';
 
 const panic = require('pathfinder/panic');
-const prefs = require('preferences-service');
+const prefs = require('sdk/preferences/service');
 const { Loader } = require('sdk/test/loader');
 
 const PREF_END_NAME = 'security.addon.panic_end';
