@@ -13,7 +13,7 @@ const { Download } = require('pathfinder/download');
 
 const { Services } = require('pathfinder/chrome/services');
 
-exports.testDownload = function(assert, done) {console.log(1)
+exports.testDownload = function(assert, done) {
   const loader = Loader(module);
   const httpd = loader.require('sdk/test/httpd');
   const { startServerAsync } = httpd;
