@@ -10,20 +10,17 @@ const { Loader } = require('sdk/test/loader');
 const PREF_END_NAME = 'security.addon.panic_end';
 
 // TEST: the inPanic variable and panic events
-exports.testPanicInPanic = function(test) {
-  test.waitUntilDone();
-
-  test.assertEqual(panic.inPanic, false, "not in a panic");
+exports.testPanicInPanic = function(assert, done) {
+  assert.equal(panic.inPanic, false, "not in a panic");
   panic.once('start', function() {
-    test.pass('"start" event was fired');
-    test.assertEqual(panic.inPanic, true, "in a panic");
+    assert.pass('"start" event was fired');
+    assert.equal(panic.inPanic, true, "in a panic");
 
     panic.once('end', function() {
-      test.pass('"end" event was fired');
-      test.assertEqual(panic.inPanic, false, "not in a panic");
+      assert.pass('"end" event was fired');
+      assert.equal(panic.inPanic, false, "not in a panic");
 
-      // end test
-      test.done();
+      done();
     });
   });
 
@@ -31,9 +28,7 @@ exports.testPanicInPanic = function(test) {
 };
 
 // TEST: on and off methods
-exports.testPanicOnOff = function(test) {
-  test.waitUntilDone();
-
+exports.testPanicOnOff = function(assert, done) {
   let count = 0;
 
   panic.on('start', function panicOn() {
@@ -42,15 +37,14 @@ exports.testPanicOnOff = function(test) {
 
     panic.once('start', function() {
       if (count > 1) {
-        test.fail('panic.on was called too many times');
+        assert.fail('panic.on was called too many times');
       }
       else {
-        test.pass('panic.on was only called once');
+        assert.pass('panic.on was only called once');
       }
 
       panic.once('end', function() {
-        // end test
-        test.done();
+        done();
       });
     });
 
@@ -63,8 +57,7 @@ exports.testPanicOnOff = function(test) {
 };
 
 // TEST: panic emits in multiple instances
-exports.testPanicFiresInMultipleInstances = function(test) {
-  test.waitUntilDone();
+exports.testPanicFiresInMultipleInstances = function(assert, done) {
   let count = 0;
 
   let loader = Loader(module);
@@ -72,13 +65,11 @@ exports.testPanicFiresInMultipleInstances = function(test) {
 
   let testCounter = function() {
     if (++count < 2) return;
-    test.pass('panic was fired on multiple instances');
+    assert.pass('panic was fired on multiple instances');
 
     panic.once('end', function() {
       loader.unload();
-
-      // end test
-      test.done();
+      done();
     });
   };
   panic.once('start', testCounter);
@@ -87,9 +78,7 @@ exports.testPanicFiresInMultipleInstances = function(test) {
   panic.panic();
 };
 
-exports.testEndTimestamp = function(test) {
-  test.waitUntilDone();
-
+exports.testEndTimestamp = function(assert, done) {
   let ms = 0;
   let min = Date.now() + ms;
   let endTimestamp;
@@ -98,16 +87,17 @@ exports.testEndTimestamp = function(test) {
     let now = Date.now();
     let max = (now + ms);
 
-    test.assert(min <= endTimestamp, endTimestamp + ' is gte ' + min);
-    test.assert(min <= now, now + ' event is gte to ' + min);
-    test.assert(max >= endTimestamp, 'timestamp is lte to max');
-    test.assert(max >= now, 'end event is lte to max');
+    assert.ok(min <= endTimestamp, endTimestamp + ' is gte ' + min);
+    assert.ok(min <= now, now + ' event is gte to ' + min);
+    assert.ok(max >= endTimestamp, 'timestamp is lte to max');
+    assert.ok(max >= now, 'end event is lte to max');
 
-    // end test
-    test.done();
+    done();
   });
 
   panic.panic(ms);
 
   endTimestamp = prefs.get(PREF_END_NAME);
 };
+
+require('sdk/test').run(exports);

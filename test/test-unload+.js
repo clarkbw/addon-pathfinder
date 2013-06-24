@@ -147,4 +147,4 @@ exports.testUnloaderExecutionOnWindowClose = function(assert, done) {
   myWindow = makeEmptyWindow();
 };
 
-require("test").run(exports);
+require('sdk/test').run(exports);
