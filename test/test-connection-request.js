@@ -19,26 +19,37 @@ exports.testNewHeader = function(assert, done) {
   });
 
   let serverPort = 8058;
+  let url = 'http://localhost:' + serverPort + '/test.txt';
   let server = httpd.startServerAsync(serverPort);
   const contents = "testNewHeader";
+  let requestCount = 0;
 
   server.registerPathHandler("/test.txt", function handle(request, response) {
-    try {
-      assert.equal(request.getHeader('X-TEST-HEADER'), 'TEST', 'the new test header value is correct');
+    requestCount++;
+
+    if (requestCount == 1) {
+      try {
+        assert.equal(request.getHeader('X-TEST-HEADER'), 'TEST', 'the new test header value is correct');
+      }
+      catch (e) {
+        assert.fail(e);
+      }
+      rule.destroy();
     }
-    catch (e) {
-      assert.fail(e);
-    }
-    rule.destroy();
     response.write(contents);
   });
 
   tabs.open({
-    url: 'http://localhost:' + serverPort + '/test.txt',
-    onReady: function() {
-      server.stop(function() {
-        done();
-      });
+    url: url,
+    onReady: function(tab) {
+      if (requestCount == 1) {
+        tab.reload();
+      }
+      else {
+        server.stop(function() {
+          done();
+        });
+      }
     }
   })
 }
