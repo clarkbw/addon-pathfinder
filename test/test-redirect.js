@@ -1,3 +1,6 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 'use strict';
 
 const tabs = require('sdk/tabs');
@@ -34,8 +37,11 @@ exports.testRedirect = function(assert, done) {
   	onReady: function(tab) {
       assert.equal(tab.url, details.to, 'The final destination is correct!');
       redirect.destroy();
-      loader.unload();
-      tab.close(done);
+
+      server.stop(function() {
+        loader.unload();
+        tab.close(done);
+      });
   	}
   });
 }

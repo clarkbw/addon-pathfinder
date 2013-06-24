@@ -44,8 +44,11 @@ exports.testDownload = function(assert, done) {
           assert.equal(text, contents, 'the file content is correct');
           file.remove(false);
           assert.ok(!file.exists(), 'File was removed');
-          loader.unload();
-          done();
+
+          server.stop(function() {
+            loader.unload();
+            done();
+          });
         }
       }).get();
     }
