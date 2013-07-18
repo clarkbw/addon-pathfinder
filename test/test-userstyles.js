@@ -66,4 +66,20 @@ exports.testUnload = function(assert) {
   assert.equal(userstyles.registered(TEST_CSS_URL), false, 'css was unregistered.');
 }
 
+exports.testUnloadWithMultipleLoads = function(assert) {
+  assert.equal(userstyles.registered(TEST_CSS_URL), false, 'css is unregistered.');
+  let loader = Loader(module);
+  // first load
+  loader.require('userstyles').load(TEST_CSS_URL);
+  assert.ok(userstyles.registered(TEST_CSS_URL), 'css was registered.');
+  // now unload
+  loader.require('userstyles').unload(TEST_CSS_URL);
+  assert.equal(userstyles.registered(TEST_CSS_URL), false, 'css is unregistered.');
+  // now load again
+  loader.require('userstyles').load(TEST_CSS_URL);
+  assert.ok(userstyles.registered(TEST_CSS_URL), 'css was registered.');
+  // send addon unload message and see if we fail
+  loader.unload();
+}
+
 require('sdk/test').run(exports);
