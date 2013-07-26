@@ -60,9 +60,56 @@ exports.testLoadAgent = function(assert) {
 exports.testUnload = function(assert) {
   assert.equal(userstyles.registered(TEST_CSS_URL), false, 'css is unregistered.');
   let loader = Loader(module);
+
   loader.require('userstyles').load(TEST_CSS_URL);
   assert.ok(userstyles.registered(TEST_CSS_URL), 'css was registered.');
+
   loader.unload();
+  assert.equal(userstyles.registered(TEST_CSS_URL), false, 'css was unregistered.');
+}
+
+exports.testUnloadWithMultipleLoads = function(assert) {
+  assert.equal(userstyles.registered(TEST_CSS_URL), false, 'css is unregistered.');
+  let loader = Loader(module);
+
+  // first load
+  loader.require('userstyles').load(TEST_CSS_URL);
+  assert.ok(userstyles.registered(TEST_CSS_URL), 'css was registered.');
+
+  // now unload
+  loader.require('userstyles').unload(TEST_CSS_URL);
+  assert.equal(userstyles.registered(TEST_CSS_URL), false, 'css is unregistered.');
+
+  // now load again
+  loader.require('userstyles').load(TEST_CSS_URL);
+  assert.ok(userstyles.registered(TEST_CSS_URL), 'css was registered.');
+
+  // send addon unload message and see if we fail
+  loader.unload();
+  assert.equal(userstyles.registered(TEST_CSS_URL), false, 'css is unregistered.');
+}
+
+exports.testUnloadWithMultipleLoaders = function(assert) {
+  assert.equal(userstyles.registered(TEST_CSS_URL), false, 'css is unregistered.');
+  let loader = Loader(module);
+
+  // first load
+  loader.require('userstyles').load(TEST_CSS_URL);
+  assert.ok(userstyles.registered(TEST_CSS_URL), 'css was registered.');
+
+  // now unload
+  loader.require('userstyles').unload(TEST_CSS_URL);
+  assert.equal(userstyles.registered(TEST_CSS_URL), false, 'css is unregistered.');
+
+  // now load again
+  userstyles.load(TEST_CSS_URL);
+  assert.ok(userstyles.registered(TEST_CSS_URL), 'css was registered.');
+
+  // send addon unload message and see if we fail
+  loader.unload();
+  assert.equal(userstyles.registered(TEST_CSS_URL), true, 'css is still registered.');
+
+  userstyles.unload(TEST_CSS_URL);
   assert.equal(userstyles.registered(TEST_CSS_URL), false, 'css was unregistered.');
 }
 

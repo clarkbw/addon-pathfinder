@@ -16,7 +16,6 @@ const { Services } = require('pathfinder/chrome/services');
 exports.testDownload = function(assert, done) {
   const loader = Loader(module);
   const httpd = loader.require('sdk/test/httpd');
-  const { startServerAsync } = httpd;
 
   let serverPort = 8057;
   let server = httpd.startServerAsync(serverPort);
@@ -56,4 +55,4 @@ exports.testDownload = function(assert, done) {
   assert.ok(!!download, 'Download started');
 }
 
-require("test").run(exports);
+require('sdk/test').run(exports);
