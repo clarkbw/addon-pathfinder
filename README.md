@@ -1,5 +1,7 @@
 # Add-on Pathfinder
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/clarkbw/addon-pathfinder.svg)](https://greenkeeper.io/)
+
 The Add-on Pathfinder is the collection of Jetpack modules made to be used with the
 [Add-on SDK](https://github.com/mozilla/addon-sdk).
 
